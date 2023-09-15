@@ -40,5 +40,10 @@ export interface Inventory {
 
 export const useInventory = defineStore('inventory', () => {
   const inventory = ref<Inventory>(inventoryMock)
-  return { inventory }
+
+  function dragCell(cellNumber: number, item) {
+    inventory.value[cellNumber] = item.body
+    inventory.value[item.itemPosition] = null
+  }
+  return { inventory, dragCell }
 })

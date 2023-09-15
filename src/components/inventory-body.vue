@@ -1,17 +1,24 @@
 <template>
   <div class="inventory__body">
     <inventory-cell
-      v-for="(item, key) of Object.values(inventoryStore.inventory)"
+      @click=""
+      @drop="onDrop"
+      v-for="([position, item], key) of Object.entries(inventoryStore.inventory)"
       :body="item"
       :key="key"
+      :position="position"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useInventory } from '@/stores/inventory'
+import { useInventory, type InventoryCell } from '@/stores/inventory'
 import inventoryCell from './inventory-cell.vue'
 const inventoryStore = useInventory()
+
+function onDrop(item: InventoryCell, cellNumber: number) {
+  inventoryStore.dragCell(cellNumber, item)
+}
 </script>
 
 <style scoped lang="scss">

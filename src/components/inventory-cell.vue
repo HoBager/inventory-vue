@@ -1,6 +1,12 @@
 <template>
-  <div v-if="props.body === null" class="cell"></div>
-  <div v-else class="cell">
+  <div
+    @drop="onDrop($event, props.position)"
+    v-if="props.body === null"
+    class="cell"
+    @dragenter.prevent
+    @dragover.prevent
+  ></div>
+  <div @dragstart="onDragStart($event, props.body)" draggable="true" v-else class="cell">
     <img class="icon" :src="props.body.icon" />
     <div class="count">{{ props.body.count }}</div>
   </div>
@@ -8,13 +14,24 @@
 
 <script setup lang="ts">
 import type { InventoryCell } from '@/stores/inventory'
-import { ref } from 'vue'
 
-const props = defineProps<{ body: InventoryCell | null }>()
+const props = defineProps<{ body: InventoryCell | null; position: string }>()
+const emit = defineEmits<{ (e: 'drop', item: InventoryCell, position: string): void }>()
+function onDragStart(event: DragEvent, item: InventoryCell) {
+  event.dataTransfer?.setData('item', JSON.stringify({ body: item, itemPosition: props.position }))
+  event.dataTransfer!.dropEffect = 'move'
+  event.dataTransfer!.effectAllowed = 'move'
+}
+
+function onDrop(event: DragEvent, cellNumber: string) {
+  const item = event.dataTransfer!.getData('item')
+  emit('drop', JSON.parse(item), cellNumber)
+}
 </script>
 
 <style scoped lang="scss">
 .cell {
+  cursor: pointer;
   position: relative;
   height: 100px;
   width: 100px;
@@ -50,5 +67,8 @@ const props = defineProps<{ body: InventoryCell | null }>()
     right: 0;
     border-radius: 6px 0px 0px 0px;
   }
+}
+.cell:hover {
+  background-color: $secondary;
 }
 </style>
