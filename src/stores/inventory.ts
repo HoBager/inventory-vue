@@ -69,7 +69,7 @@ export const useInventory = defineStore('inventory', () => {
     }
   }
 
-  function dragCell(cellNumber: number, item: { body: InventoryCell; position: number }) {
+  function dragCell(cellNumber: number, item: { body: InventoryCell; itemPosition: number }) {
     inventory.value[cellNumber] = item.body
     inventory.value[item.itemPosition] = null
   }
