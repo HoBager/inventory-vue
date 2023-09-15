@@ -1,7 +1,7 @@
 <template>
-  <main><div>Kek</div></main>
+  <main></main>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>
