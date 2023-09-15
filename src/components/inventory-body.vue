@@ -1,15 +1,17 @@
 <template>
   <div class="inventory__body">
-    <inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell />
-    <inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell />
-    <inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell />
-    <inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell />
-    <inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell /><inventory-cell />
+    <inventory-cell
+      v-for="(item, key) of Object.values(inventoryStore.inventory)"
+      :body="item"
+      :key="key"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useInventory } from '@/stores/inventory'
 import inventoryCell from './inventory-cell.vue'
+const inventoryStore = useInventory()
 </script>
 
 <style scoped lang="scss">
