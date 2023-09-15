@@ -24,11 +24,11 @@ import type { InventoryCell } from '@/stores/inventory'
 const props = defineProps<{ body: InventoryCell | null; position: string }>()
 const emit = defineEmits<{
   (e: 'drop', item: InventoryCell, position: string): void
-  (e: 'openItem', item: InventoryCell): void
+  (e: 'openItem', item: InventoryCell, position: string): void
 }>()
 
 function openItem() {
-  emit('openItem', props.body as InventoryCell)
+  emit('openItem', props.body as InventoryCell, props.position)
 }
 
 function onDragStart(event: DragEvent, item: InventoryCell) {

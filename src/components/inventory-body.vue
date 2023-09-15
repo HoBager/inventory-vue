@@ -10,7 +10,12 @@
         :position="position"
       />
     </div>
-    <inventory-modal :item="modalValue" v-if="modalOpen" @close-modal="modalOpen = false" />
+    <inventory-modal
+      @delete-item="deleteItem"
+      :data="modalValue"
+      v-if="modalOpen"
+      @close-modal="modalOpen = false"
+    />
   </div>
 </template>
 
@@ -22,10 +27,14 @@ import { ref } from 'vue'
 
 const inventoryStore = useInventory()
 const modalOpen = ref(false)
-const modalValue = ref<InventoryCell | undefined>(undefined)
+const modalValue = ref<{ item: InventoryCell; position: string } | undefined>(undefined)
 
-function openModal(item: InventoryCell) {
-  modalValue.value = item
+function deleteItem(count: number | '', position: string) {
+  inventoryStore.deleteItem(count, position)
+}
+
+function openModal(item: InventoryCell, position: string) {
+  modalValue.value = { item, position }
   modalOpen.value = true
 }
 

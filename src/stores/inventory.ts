@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const inventoryMock: Inventory = {
   1: { count: 4, icon: 'item-image1.svg', id: 1 },
@@ -38,12 +38,40 @@ export interface Inventory {
   [key: number]: InventoryCell | null
 }
 
+const INVENTORY_KEY = 'inventory'
+
 export const useInventory = defineStore('inventory', () => {
   const inventory = ref<Inventory>(inventoryMock)
+
+  const inventoryOnStorage = localStorage.getItem(INVENTORY_KEY)
+
+  if (inventoryOnStorage) {
+    inventory.value = JSON.parse(inventoryOnStorage)._value
+  } else {
+    inventory.value = inventoryMock
+  }
+
+  watch(
+    () => inventory,
+    (state) => {
+      localStorage.setItem(INVENTORY_KEY, JSON.stringify(state))
+    },
+    { deep: true }
+  )
+
+  function deleteItem(deleteCount: number | '', itemPosition: string) {
+    const position = parseInt(itemPosition)
+    if (deleteCount) {
+      const itemCount = inventory.value[position]!.count
+      itemCount - deleteCount <= 0
+        ? (inventory.value[position] = null)
+        : (inventory.value[position]!.count -= deleteCount)
+    }
+  }
 
   function dragCell(cellNumber: number, item) {
     inventory.value[cellNumber] = item.body
     inventory.value[item.itemPosition] = null
   }
-  return { inventory, dragCell }
+  return { inventory, dragCell, deleteItem }
 })

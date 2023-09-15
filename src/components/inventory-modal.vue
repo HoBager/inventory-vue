@@ -1,7 +1,7 @@
 <template>
-  <div class="modal">
+  <div v-if="props.data" class="modal">
     <button class="close" @click="emit('closeModal')"><img src="carbon-close.svg" /></button>
-    <img class="icon" :src="props.item?.icon" />
+    <img class="icon" :src="props.data.item?.icon" />
     <hr />
     <div class="text">
       <text-skeleton class="name" :width="'211px'" :height="'30px'" radius="8px" />
@@ -19,7 +19,9 @@
       <input v-model="deleteCount" type="number" placeholder="введите количество" />
       <div class="confirm__buttons">
         <button @click="confirm = false" class="cansel">Отмена</button
-        ><button class="apply">Подтвердить</button>
+        ><button @click="emit('deleteItem', deleteCount, props.data.position)" class="apply">
+          Подтвердить
+        </button>
       </div>
     </div>
   </div>
@@ -30,9 +32,12 @@ import type { InventoryCell } from '@/stores/inventory'
 import TextSkeleton from './text-skeleton.vue'
 import { ref } from 'vue'
 
-const emit = defineEmits<{ (e: 'closeModal'): void; (e: 'deleteItem', count: number): void }>()
-const props = defineProps<{ item?: InventoryCell }>()
-const deleteCount = ref<number>(0)
+const emit = defineEmits<{
+  (e: 'closeModal'): void
+  (e: 'deleteItem', count: number | '', position: string): void
+}>()
+const props = defineProps<{ data: { item: InventoryCell; position: string } | undefined }>()
+const deleteCount = ref<number | ''>('')
 const confirm = ref<boolean>(false)
 </script>
 
