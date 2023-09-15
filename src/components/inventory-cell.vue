@@ -6,7 +6,13 @@
     @dragenter.prevent
     @dragover.prevent
   ></div>
-  <div @dragstart="onDragStart($event, props.body)" draggable="true" v-else class="cell">
+  <div
+    @click="openItem"
+    @dragstart="onDragStart($event, props.body)"
+    draggable="true"
+    v-else
+    class="cell"
+  >
     <img class="icon" :src="props.body.icon" />
     <div class="count">{{ props.body.count }}</div>
   </div>
@@ -16,7 +22,15 @@
 import type { InventoryCell } from '@/stores/inventory'
 
 const props = defineProps<{ body: InventoryCell | null; position: string }>()
-const emit = defineEmits<{ (e: 'drop', item: InventoryCell, position: string): void }>()
+const emit = defineEmits<{
+  (e: 'drop', item: InventoryCell, position: string): void
+  (e: 'openItem', item: InventoryCell): void
+}>()
+
+function openItem() {
+  emit('openItem', props.body as InventoryCell)
+}
+
 function onDragStart(event: DragEvent, item: InventoryCell) {
   event.dataTransfer?.setData('item', JSON.stringify({ body: item, itemPosition: props.position }))
   event.dataTransfer!.dropEffect = 'move'
