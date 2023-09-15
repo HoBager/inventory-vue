@@ -38,7 +38,7 @@ function openModal(item: InventoryCell, position: string) {
   modalOpen.value = true
 }
 
-function onDrop(item: InventoryCell, cellNumber: number) {
+function onDrop(item: { body: InventoryCell; position: number }, cellNumber: number) {
   inventoryStore.dragCell(cellNumber, item)
 }
 </script>
