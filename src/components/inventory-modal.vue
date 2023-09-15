@@ -1,6 +1,6 @@
 <template>
   <div v-if="props.data" class="modal">
-    <button class="close" @click="emit('closeModal')"><img src="carbon-close.svg" /></button>
+    <button class="close" @click="emit('closeModal')"><close-icon /></button>
     <img class="icon" :src="props.data.item?.icon" />
     <hr />
     <div class="text">
@@ -31,6 +31,7 @@
 import type { InventoryCell } from '@/stores/inventory'
 import TextSkeleton from './text-skeleton.vue'
 import { ref } from 'vue'
+import CloseIcon from '@/components/icon-close.vue'
 
 const emit = defineEmits<{
   (e: 'closeModal'): void

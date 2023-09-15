@@ -1,14 +1,14 @@
 <template>
   <div v-if="isOpen" class="notification">
     <text-skeleton width="700px" height="36px" radius="12px" />
-    <button @click="isOpen = false" class="close"><img src="carbon-close.svg" /></button>
+    <button @click="isOpen = false" class="close"><close-icon /></button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import textSkeleton from './text-skeleton.vue'
-
+import CloseIcon from '@/components/icon-close.vue'
 const isOpen = ref<boolean>(true)
 </script>
 
