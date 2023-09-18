@@ -1,6 +1,6 @@
 <template>
   <div class="inventory__body">
-    <div class="inventory__table">
+    <div draggable="false" class="inventory__table">
       <inventory-cell
         @open-item="openModal"
         @drop="onDrop"
@@ -46,12 +46,14 @@ function onDrop(item: { body: InventoryCell; itemPosition: number }, cellNumber:
 <style scoped lang="scss">
 .inventory__body {
   position: relative;
+  z-index: 2;
+  overflow: hidden;
+  border: 1px solid $primary;
+  border-radius: 12px;
 }
 .inventory__table {
   display: grid;
   grid-template-columns: 100px 100px 100px 100px 100px;
   grid-template-rows: 100px 100px 100px 100px 100px;
-  border-radius: 12px;
-  border: 1px solid $primary;
 }
 </style>

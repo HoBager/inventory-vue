@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.data" class="modal">
+  <div v-if="props.data" class="modal" :class="{ active: props.data }">
     <button class="close" @click="emit('closeModal')"><close-icon /></button>
     <img class="icon" :src="props.data.item?.icon" />
     <hr />
@@ -56,7 +56,10 @@ const confirm = ref<boolean>(false)
   right: 1px;
   background: rgba(38, 38, 38, 0.835);
   padding: 55px 15px 18px;
-
+  z-index: 1;
+  &.active {
+    animation: open-modal 1.2s ease-in-out;
+  }
   .close {
     background-color: unset;
     border: unset;
@@ -153,6 +156,15 @@ const confirm = ref<boolean>(false)
     .confirm__buttons .cansel {
       background-color: $primaryWhite;
     }
+  }
+}
+
+@keyframes open-modal {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
   }
 }
 </style>
