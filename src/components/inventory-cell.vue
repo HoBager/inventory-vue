@@ -5,10 +5,13 @@
     class="cell"
     @dragenter.prevent
     @dragover.prevent
+    draggable="false"
+    @dragend="dragend"
   ></div>
   <div
     @click="openItem"
     @dragstart="onDragStart($event, props.body)"
+    @dragend="dragend"
     draggable="true"
     v-else
     class="cell"
@@ -32,18 +35,55 @@ function openItem() {
 }
 
 function onDragStart(event: DragEvent, item: InventoryCell) {
+  const ghost = document.createElement('div')
+  const ghostIcon = document.createElement('img')
+  ghost.append(ghostIcon)
+  ghostIcon.src = props.body?.icon || ''
+  ghost.classList.add('ghost')
+
   event.dataTransfer?.setData('item', JSON.stringify({ body: item, itemPosition: props.position }))
   event.dataTransfer!.dropEffect = 'move'
   event.dataTransfer!.effectAllowed = 'move'
+  document.body.append(ghost)
+  event.dataTransfer!.setDragImage(ghost, 50, 50)
+}
+
+function dragend() {
+  document.querySelector('.ghost')?.remove()
 }
 
 function onDrop(event: DragEvent, cellNumber: string) {
   const item = event.dataTransfer!.getData('item')
-  emit('drop', JSON.parse(item), cellNumber)
+
+  try {
+    const cell = JSON.parse(item)
+    emit('drop', cell, cellNumber)
+  } catch {
+    return
+  }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+.ghost {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  background-color: $secondary;
+  border: 1px solid $primary;
+  opacity: 1;
+}
+
+.ghost__active {
+  opacity: 1;
+}
+
 .cell {
   cursor: pointer;
   position: relative;
@@ -54,6 +94,8 @@ function onDrop(event: DragEvent, cellNumber: string) {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: $secondary;
+
   &:nth-child(5n) {
     border-right: unset;
   }
@@ -83,6 +125,6 @@ function onDrop(event: DragEvent, cellNumber: string) {
   }
 }
 .cell:hover {
-  background-color: $secondary;
+  background-color: #2f2f2f;
 }
 </style>

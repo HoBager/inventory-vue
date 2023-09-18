@@ -1,5 +1,5 @@
 <template>
-  <div class="inventory__body">
+  <div draggable="false" class="inventory__body">
     <div draggable="false" class="inventory__table">
       <inventory-cell
         @open-item="openModal"
