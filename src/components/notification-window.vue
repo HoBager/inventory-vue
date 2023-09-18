@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import textSkeleton from './text-skeleton.vue'
-import CloseIcon from '@/components/icon-close.vue'
+import CloseIcon from '@/components/icons/icon-close.vue'
 const isOpen = ref<boolean>(true)
 </script>
 

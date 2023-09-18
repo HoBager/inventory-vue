@@ -31,7 +31,7 @@
 import type { InventoryCell } from '@/stores/inventory'
 import TextSkeleton from './text-skeleton.vue'
 import { ref } from 'vue'
-import CloseIcon from '@/components/icon-close.vue'
+import CloseIcon from '@/components/icons/icon-close.vue'
 
 const emit = defineEmits<{
   (e: 'closeModal'): void
